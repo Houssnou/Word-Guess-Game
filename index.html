@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css">
+  <link rel="stylesheet" href="style.css">
+  <title>Word Guess Game</title>
+</head>
+
+<body>
+  <div class="jumbotron my-5 bg-dark text-light text-center">
+    <h1 class="display-4">Word Guess Game!</h1>
+    <p class="lead">This a lite version of the homework. The theme is CAR BRANDS. The user will guess a brand name in
+      12 attempts.</p>
+    <p class="lead">Press any key to start!!!</p>
+    <hr class="my-4">
+    <p> Brand to guess </p>
+    <p id="toguess"> </p>
+    <p> Wins: </p>
+    <p id="wins"></p>
+    <p> Number of guesses remainaing </p>
+    <p id="guessesLeft">12</p>
+    <p> Letters already guessed: </p>
+    <p id="guesses"></p>
+
+  </div>
+  <script>
+    //declaration of variables 
+    var wins = 0; // to store the user wins
+    var losses = 0; //to store the losses
+    var attempts = 12; // to store the number of attempts left
+    var userGuesses = []; // to store all the key pressed by the user
+    var computerGuess;
+    var remainingLetters = 0;
+    var answerArray = [];
+    // the alphabet array named letters
+    var letters = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m",
+      "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"
+    ];
+
+    var brands = ["mercedes-benz", "audi", "volkswagen", "bmw", "opel", "porsche",
+      "fiat", "lancia", "alfa-romeo", "lamborghini", "maserati", "ferrari",
+      "citroen", "renault", "bugatti", "alpine", "peugeot", "mclaren", "aston-martin", "vauxhall", "bentley",
+      "rolls-royce", "land-rover", "mini", "chrysler", "dodge", "jeep",
+      "chevrolet", "buick", "gmc", "cadillac", "lincoln", "ford", "honda", "toyota", "suzuki", "lexus", "infiniti",
+      "mazda", "mitsubishi", "nissan", "hyundai", "kia", "daewoo"
+    ];
+
+    function resetGame() {
+      // Randomly chooses a choice from the brands array. This is the Computer's guess.
+      computerGuess = brands[Math.floor(Math.random() * brands.length)];
+      console.log(computerGuess);
+
+      for (var i = 0; i < computerGuess.length; i++) { // loop to place the dashes in the answerArray
+        answerArray[i] = "_";
+      }
+      var remainingLetters = computerGuess.length; //remainingLetters is the length of the word to guess
+
+      console.log(answerArray.join('|'));
+      console.log(remainingLetters);
+
+      userGuesses = [];
+      attempts = 12;
+
+      document.getElementById("toguess").textContent = answerArray.join(' ');
+
+    }
+    //run resetGame on load
+    resetGame();
+
+    //
+    document.onkeyup = function (event) {
+
+      var userGuess = event.key.toLowerCase(); // userGuess to store the key pressed by the user
+
+      //console.log(userGuess);
+      //console.log("--" + computerGuess);
+      //lets check if the user guess matches the computer guess
+      // lets store the user guessed word in the userGuessed Array
+      userGuesses.push(userGuess);
+      
+      
+        // display the current value of answerArray
+        document.getElementById("toguess").textContent = answerArray.join(' ');
+
+        /* function isEqual(arr){
+            
+        } */
+          //check if the user letter correspond to any value of the computer guess
+        for (var j = 0; j < computerGuess.length; j++) { 
+          if (userGuess === computerGuess[j] ) { 
+              answerArray[j] = userGuess; // store to the current index the value that matches to the current computer guess index
+              remainingLetters--;         // take 1 off the remainingLetters value
+              attempts--;                 // take 1 off on the remainingLetters value
+          } else{
+              attempts--;                // take 1 off on the remainingLetters value
+          }
+
+        }
+        //console.log(`w: ${wins} L: ${losses} a: ${attempts}`);
+        //console.log(userGuesses.join(' ') + '.');
+      document.getElementById("wins").textContent = wins;
+      document.getElementById("guessesLeft").textContent = attempts;
+      document.getElementById("guesses").textContent = userGuesses.join(' ');
+
+    }
+  </script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.slim.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.13.0/umd/popper.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/js/bootstrap.min.js"></script>
+</body>
+
+</html>
